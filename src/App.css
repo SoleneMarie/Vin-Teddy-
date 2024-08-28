@@ -1,6 +1,38 @@
-#root {
+.wide {
+  background-color: white;
+  background-image: url("./pictures/hero-24963eb2.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.widthLim {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  height: 455px;
+
+  display: flex;
+  align-items: center;
+}
+
+#titleblock {
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+  width: 35%;
+  justify-content: center;
+  background-color: white;
+}
+
+#all-articles {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-items: center;
+  justify-content: center;
+}
+
+.one-article {
+  width: 22%;
 }

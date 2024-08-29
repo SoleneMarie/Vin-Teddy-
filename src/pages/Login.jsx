@@ -99,13 +99,16 @@ const Login = () => {
             <section className="suscribe-signup">
               <button
                 type="submit"
-                onClick={() => {
-                  {
-                    !username || !password || !mail
-                      ? setEmpty(true)
-                      : password.length < 8
-                      ? setErrorPassword(true)
-                      : setCreated(true);
+                onClick={(event) => {
+                  event.preventDefault();
+                  setEmpty(false);
+                  setErrorPassword(false);
+                  if (!password || !mail || !username) {
+                    setEmpty(true);
+                  } else if (password.length < 8) {
+                    setErrorPassword(true);
+                  } else {
+                    setCreated(true);
                   }
                 }}
               >

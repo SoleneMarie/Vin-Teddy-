@@ -7,9 +7,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [mail, setMail] = useState("");
-  const [errorPassword, setErrorPassword] = useState("false");
-  const [empty, setEmpty] = useState("false");
-  const [created, setCreated] = useState("false");
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [empty, setEmpty] = useState(false);
+  const [created, setCreated] = useState(false);
 
   console.log("data à récupérer : " + username + password + mail);
   {
@@ -37,7 +37,7 @@ const Login = () => {
   }
   return (
     <>
-      {created == false ? (
+      {created === false ? (
         <>
           <div className="title-signup">
             <h1>S'inscrire</h1>
@@ -87,6 +87,15 @@ const Login = () => {
                 </p>
               </section>
             </form>
+            {empty === true && (
+              <p className="red-login">Veuillez compléter tous les champs</p>
+            )}
+            {errorPassword === true && (
+              <p className="red-login">
+                Votre mot de passe doit comporter au moins 8 caractères{" "}
+              </p>
+            )}
+            <section></section>
             <section className="suscribe-signup">
               <button
                 type="submit"
@@ -106,15 +115,9 @@ const Login = () => {
             </section>
           </section>
         </>
-      ) : empty === true ? (
-        <p className="red-login">Veuillez compléter tous les champs</p>
-      ) : errorPassword === true ? (
-        <p className="red-login">
-          Votre mot de passe doit comporter au moins 8 caractères{" "}
-        </p>
       ) : (
         <p>Félicitations, votre compte a été créé!</p>
-      )}{" "}
+      )}
     </>
   );
 };

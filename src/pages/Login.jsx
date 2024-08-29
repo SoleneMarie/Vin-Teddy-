@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [data, setData] = [{}];
@@ -7,26 +8,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [mail, setMail] = useState("");
+  const [newsletter, setNewsletter] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [empty, setEmpty] = useState(false);
   const [created, setCreated] = useState(false);
+  const user = {
+    username: username,
+    password: password,
+    email: mail,
+    newsletter: newsletter,
+  };
 
-  console.log("data à récupérer : " + username + password + mail);
-  {
-    /* ------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------
--------------------------------Fonction pour envoyer le data au back----------------------------
---------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------- */
-  }
-
-  useEffect(() => {
-    const sendData = async () => {
-      await axios.post(
-        "https://lereacteur-vinted-api.herokuapp.com/user/signup"
-      );
-    };
-  });
+  console.log("data à récupérer : " + username + password + mail + newsletter);
 
   {
     /* ------------------------------------------------------------------------------------------------------
@@ -73,12 +66,17 @@ const Login = () => {
                   name="password"
                   placeholder="Mot de passe"
                   onChange={(event) => {
-                    setPassword(event.target.password);
+                    setPassword(event.target.value);
                   }}
                 />
               </section>
               <section className="newsletter-signup">
-                <input type="checkbox" id="newsletter" name="newsletter" />{" "}
+                <input
+                  type="checkbox"
+                  id="newsletter"
+                  name="newsletter"
+                  onClick={() => setNewsletter(true)}
+                />
                 <label>S'incrire à votre newsletter</label>
                 <p>
                   En m'inscrivant, je confirme avoir lu et accepté les Termes &
@@ -99,7 +97,7 @@ const Login = () => {
             <section className="suscribe-signup">
               <button
                 type="submit"
-                onClick={(event) => {
+                onClick={async (event) => {
                   event.preventDefault();
                   setEmpty(false);
                   setErrorPassword(false);
@@ -110,6 +108,10 @@ const Login = () => {
                   } else {
                     setCreated(true);
                   }
+                  await axios.post(
+                    "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+                    { user }
+                  );
                 }}
               >
                 S'inscrire
@@ -119,8 +121,16 @@ const Login = () => {
           </section>
         </>
       ) : (
-        <p>Félicitations, votre compte a été créé!</p>
+        <section className="created-login">
+          <p>Félicitations, votre compte a été créé!</p>
+          <Link to="/">
+            <button onClick={(event) => event.preventDefault}>
+              Retourner à la page d'accueil
+            </button>
+          </Link>
+        </section>
       )}
+      {console.log("user created : " + user)}
     </>
   );
 };

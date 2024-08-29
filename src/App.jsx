@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
-
 import Offer from "./pages/Offer";
+import Login from "./pages/Login";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Link } from "react-router-dom";
@@ -12,19 +12,20 @@ function App() {
   return (
     <>
       <Router>
+        {log ? (
+          <p>Vous êtes connecté</p>
+        ) : (
+          <Link to="/signup">
+            <button> Se connecter</button>
+          </Link>
+        )}
+        <header>
+          <p>Insérer header ici 🐣</p>
+        </header>
         <Routes>
-          {log ? (
-            <p>Vous êtes connecté</p>
-          ) : (
-            <Link to="/signup">
-              <button> Se connecter</button>
-            </Link>
-          )}
-          <header>
-            <p>Insérer header ici 🐣</p>
-          </header>
           <Route path="/" element={<Home />} />
           <Route path="/offer/:id" element={<Offer />} />
+          <Route path="/signup" element={<Login />} />
         </Routes>
       </Router>
     </>

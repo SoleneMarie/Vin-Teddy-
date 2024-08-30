@@ -35,7 +35,7 @@ function App() {
             path="/signup"
             element={<Signup log={log} setLog={setLog} />}
           />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login log={log} setLog={setLog} />} />
         </Routes>
       </Router>
     </>

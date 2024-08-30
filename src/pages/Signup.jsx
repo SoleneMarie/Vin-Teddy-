@@ -3,8 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const Signup = () => {
-  const [isLoading, setIsLoading] = useState(true);
+const Signup = (log, setLog) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [mail, setMail] = useState("");
@@ -31,7 +30,7 @@ const Signup = () => {
     <>
       <section className="wide-signup">
         <section className="widthlim-signup">
-          {created === false || errorserv === true ? (
+          {errorserv === true || created === false ? (
             <>
               <div className="title-signup">
                 <h1>S'inscrire</h1>
@@ -90,7 +89,7 @@ const Signup = () => {
                   <p className="red-signup">
                     Veuillez compléter tous les champs
                   </p>
-                )}{" "}
+                )}
                 {/* -------OK----- */}
                 {errorPassword === true && (
                   <p className="red-signup">
@@ -117,18 +116,17 @@ const Signup = () => {
                       } else if (password.length < 8) {
                         setErrorPassword(true);
                       } else {
-                        setCreated(true);
-                        setIsLoading(true);
                         const response = await axios.post(
                           "https://lereacteur-vinted-api.herokuapp.com/user/signup",
                           user
                         );
+                        try {
+                          console.log(response.data);
 
-                        console.log(response.data);
-                        if (response.data.token) {
                           const token = response.data.token;
                           Cookies.set("token", token, { expires: 30 });
-                        } else {
+                          setCreated(true);
+                        } catch (error) {
                           setErrorserv(true);
                         }
                       }
@@ -148,6 +146,7 @@ const Signup = () => {
           ) : (
             <section className="created-signup">
               <p>Félicitations, votre compte a été créé!</p>
+              {setLog(true)}
 
               <Link to="/">
                 <button onClick={(event) => event.preventDefault}>

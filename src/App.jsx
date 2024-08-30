@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Link } from "react-router-dom";
@@ -15,9 +16,14 @@ function App() {
         {log ? (
           <p>Vous êtes connecté</p>
         ) : (
-          <Link to="/signup">
-            <button> Se connecter</button>
-          </Link>
+          <>
+            <Link to="/signup">
+              <button> S'inscrire</button>
+            </Link>
+            <Link to="/login">
+              <button>Se connecter</button>
+            </Link>
+          </>
         )}
         <header>
           <p>Insérer header ici 🐣</p>
@@ -25,7 +31,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/offer/:id" element={<Offer />} />
-          <Route path="/signup" element={<Login />} />
+          <Route
+            path="/signup"
+            element={<Signup log={log} setLog={setLog} />}
+          />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </>

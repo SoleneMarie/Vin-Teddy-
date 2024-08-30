@@ -1,136 +1,86 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [data, setData] = [{}];
-  const [isLoading, setIsLoading] = useState(true);
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [mail, setMail] = useState("");
-  const [newsletter, setNewsletter] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const [created, setCreated] = useState(false);
-  const user = {
-    username: username,
-    password: password,
-    email: mail,
-    newsletter: newsletter,
-  };
+  const [mail, setMail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorServLog, setErrorServLog] = useState("");
+  const data = { email: mail, password: password };
+  let response = {};
+  const navigate = useNavigate();
 
-  console.log("data à récupérer : " + username + password + mail + newsletter);
-
-  {
-    /* ------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------
-----------------------------------------------------------Formulaire-------------------------------------
---------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------- */
-  }
   return (
     <>
-      {created === false ? (
-        <>
-          <div className="title-signup">
-            <h1>S'inscrire</h1>
-          </div>
-          <section className="form-signup">
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-              }}
-            >
-              <section className="emptyfields-signup">
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Nom d'utilisateur"
-                  onChange={(event) => {
-                    setUsername(event.target.value);
-                  }}
-                />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  onChange={(event) => {
-                    setMail(event.target.value);
-                  }}
-                />
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  placeholder="Mot de passe"
-                  onChange={(event) => {
-                    setPassword(event.target.value);
-                  }}
-                />
-              </section>
-              <section className="newsletter-signup">
-                <input
-                  type="checkbox"
-                  id="newsletter"
-                  name="newsletter"
-                  onClick={() => setNewsletter(true)}
-                />
-                <label>S'incrire à votre newsletter</label>
-                <p>
-                  En m'inscrivant, je confirme avoir lu et accepté les Termes &
-                  Conditions et Politique de confidentialité de Vin'Teddy. Je
-                  confirme avoir au moins 18 ans.{" "}
-                </p>
-              </section>
-            </form>
-            {empty === true && (
-              <p className="red-login">Veuillez compléter tous les champs</p>
-            )}
-            {errorPassword === true && (
-              <p className="red-login">
-                Votre mot de passe doit comporter au moins 8 caractères{" "}
-              </p>
-            )}
-            <section></section>
-            <section className="suscribe-signup">
+      <section className="wide-login">
+        <section className="widthlim-login">
+          <div className="title-login">Se connecter</div>
+          <section className="form-login">
+            <form onSubmit={(event) => event.preventDefault()}>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Adresse email"
+                onChange={(event) => setMail(event.target.value)}
+              />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Mot de passe"
+                onChange={(event) => setPassword(event.target.value)}
+              />
               <button
+                className="button-login"
                 type="submit"
                 onClick={async (event) => {
-                  event.preventDefault();
+                  event.preventDefault;
                   setEmpty(false);
-                  setErrorPassword(false);
-                  if (!password || !mail || !username) {
-                    setEmpty(true);
-                  } else if (password.length < 8) {
-                    setErrorPassword(true);
-                  } else {
-                    setCreated(true);
+                  setErrorServLog(false);
+                  {
+                    !mail || !password
+                      ? setEmpty(true)
+                      : (response = await axios.post(
+                          " https://lereacteur-vinted-api.herokuapp.com/user/login",
+                          data
+                        ));
+                    console.log(response.data);
+                    if (response.data.token) {
+                      Cookies.set("token", response.data.token, {
+                        expires: 30,
+                      });
+                      navigate("/");
+                    } else {
+                      setErrorServLog(true);
+                    }
                   }
-                  await axios.post(
-                    "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-                    { user }
-                  );
                 }}
               >
-                S'inscrire
+                Se connecter
               </button>
-              <p>Tu as déjà un compte? Connecte-toi!</p>
-            </section>
+              {empty === true && <p>Veuillez compléter tous les champs</p>}{" "}
+              {/* -------OK----- */}
+              {errorServLog === true && (
+                <p>
+                  Un problème est survenu. Veuillez réessayer ultérieurement.
+                </p>
+              )}
+              <Link to="/signup">
+                <p>Pas encore de compte? Inscris-toi!</p>
+              </Link>
+              <Link to="/">
+                <button onClick={(event) => event.preventDefault}>
+                  Retourner à la page d'accueil
+                </button>
+              </Link>
+            </form>
           </section>
-        </>
-      ) : (
-        <section className="created-login">
-          <p>Félicitations, votre compte a été créé!</p>
-          <Link to="/">
-            <button onClick={(event) => event.preventDefault}>
-              Retourner à la page d'accueil
-            </button>
-          </Link>
         </section>
-      )}
-      {console.log("user created : " + user)}
+      </section>
     </>
   );
 };

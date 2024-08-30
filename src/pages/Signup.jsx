@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const Signup = (log, setLog) => {
+const Signup = ({ log, setLog }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [mail, setMail] = useState("");
@@ -17,6 +17,35 @@ const Signup = (log, setLog) => {
     username: username,
     password: password,
     newsletter: newsletter,
+  };
+
+  const signupFunc = async () => {
+    setEmpty(false);
+    setErrorPassword(false);
+    setErrorserv(false);
+    if (!password || !mail || !username) {
+      setEmpty(true);
+    } else if (password.length < 8) {
+      setErrorPassword(true);
+    } else {
+      try {
+        const response = await axios.post(
+          "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+          user
+        );
+
+        console.log(response.data);
+
+        const token = response.data.token;
+        Cookies.set("token", token, { expires: 30 });
+        setCreated(true);
+        {
+          setLog(true);
+        }
+      } catch (error) {
+        setErrorserv(true);
+      }
+    }
   };
 
   {
@@ -39,6 +68,7 @@ const Signup = (log, setLog) => {
                 <form
                   onSubmit={(event) => {
                     event.preventDefault();
+                    signupFunc();
                   }}
                 >
                   <section className="emptyfields-signup">
@@ -108,28 +138,6 @@ const Signup = (log, setLog) => {
                     type="submit"
                     onClick={async (event) => {
                       event.preventDefault();
-                      setEmpty(false);
-                      setErrorPassword(false);
-                      setErrorserv(false);
-                      if (!password || !mail || !username) {
-                        setEmpty(true);
-                      } else if (password.length < 8) {
-                        setErrorPassword(true);
-                      } else {
-                        const response = await axios.post(
-                          "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-                          user
-                        );
-                        try {
-                          console.log(response.data);
-
-                          const token = response.data.token;
-                          Cookies.set("token", token, { expires: 30 });
-                          setCreated(true);
-                        } catch (error) {
-                          setErrorserv(true);
-                        }
-                      }
                     }}
                   >
                     S'inscrire
@@ -146,7 +154,6 @@ const Signup = (log, setLog) => {
           ) : (
             <section className="created-signup">
               <p>Félicitations, votre compte a été créé!</p>
-              {setLog(true)}
 
               <Link to="/">
                 <button onClick={(event) => event.preventDefault}>

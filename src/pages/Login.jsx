@@ -11,7 +11,35 @@ const Login = (log, setLog) => {
   const [errorServLog, setErrorServLog] = useState("");
   const data = { email: mail, password: password };
   let response = {};
+
   const navigate = useNavigate();
+
+  const signupFunc = async () => {
+    setEmpty(false);
+    setErrorPassword(false);
+    setErrorserv(false);
+    if (!password || !mail || !username) {
+      setEmpty(true);
+    } else if (password.length < 8) {
+      setErrorPassword(true);
+    } else {
+      try {
+        const response = await axios.post(
+          "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+          user
+        );
+        console.log(response.data);
+        const token = response.data.token;
+        Cookies.set("token", token, { expires: 30 });
+        setCreated(true);
+        {
+          setLog(true);
+        }
+      } catch (error) {
+        setErrorserv(true);
+      }
+    }
+  };
 
   return (
     <>
@@ -74,7 +102,7 @@ const Login = (log, setLog) => {
                 <p>Pas encore de compte? Inscris-toi!</p>
               </Link>
               <Link to="/">
-                <button onClick={(event) => event.preventDefault}>
+                <button onClick={() => signupFunc()}>
                   Retourner à la page d'accueil
                 </button>
               </Link>

@@ -44,6 +44,7 @@ const Home = () => {
 --------------------------------------------------------------------------------------------------------- */}
         <section id="all-articles">
           {offers.map((item) => {
+            console.log(item._id);
             return (
               <>
                 <Link to={"/offer/" + item._id} key={item._id}>

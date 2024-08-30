@@ -39,9 +39,8 @@ const Signup = ({ log, setLog }) => {
         const token = response.data.token;
         Cookies.set("token", token, { expires: 30 });
         setCreated(true);
-        {
-          setLog(true);
-        }
+
+        setLog(true);
       } catch (error) {
         setErrorserv(true);
       }
@@ -116,19 +115,12 @@ const Signup = ({ log, setLog }) => {
                   </section>
 
                   <section className="suscribe-signup">
-                    <button
-                      type="submit"
-                      onClick={async (event) => {
-                        event.preventDefault();
-                      }}
-                    >
+                    <button type="submit" onClick={signupFunc}>
                       S'inscrire
                     </button>
                     <p>Tu as déjà un compte? Connecte-toi!</p>
                     <Link to="/">
-                      <button onClick={(event) => event.preventDefault}>
-                        Retourner à la page d'accueil
-                      </button>
+                      <button>Retourner à la page d'accueil</button>
                     </Link>
                   </section>
                 </form>
@@ -154,9 +146,7 @@ const Signup = ({ log, setLog }) => {
               <p>Félicitations, votre compte a été créé!</p>
 
               <Link to="/">
-                <button onClick={(event) => event.preventDefault}>
-                  Retourner à la page d'accueil
-                </button>
+                <button onClick>Retourner à la page d'accueil</button>
               </Link>
             </section>
           )}

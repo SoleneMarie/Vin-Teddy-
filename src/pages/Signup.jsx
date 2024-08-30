@@ -114,42 +114,40 @@ const Signup = ({ log, setLog }) => {
                       Vin'Teddy. Je confirme avoir au moins 18 ans.{" "}
                     </p>
                   </section>
-                </form>
-                {empty === true && (
-                  <p className="red-signup">
-                    Veuillez compléter tous les champs
-                  </p>
-                )}
-                {/* -------OK----- */}
-                {errorPassword === true && (
-                  <p className="red-signup">
-                    Votre mot de passe doit comporter au moins 8 caractères
-                  </p>
-                )}
-                {/* -------OK----- */}
-                {errorserv === true && (
-                  <p classeName="red-signup">
-                    Un problème est survenu. Veuillez réessayer ultérieurement.
-                  </p>
-                )}
-                <section></section>
-                <section className="suscribe-signup">
-                  <button
-                    type="submit"
-                    onClick={async (event) => {
-                      event.preventDefault();
-                    }}
-                  >
-                    S'inscrire
-                  </button>
-                  <p>Tu as déjà un compte? Connecte-toi!</p>
-                  <Link to="/">
-                    <button onClick={(event) => event.preventDefault}>
-                      Retourner à la page d'accueil
+
+                  <section className="suscribe-signup">
+                    <button
+                      type="submit"
+                      onClick={async (event) => {
+                        event.preventDefault();
+                      }}
+                    >
+                      S'inscrire
                     </button>
-                  </Link>
-                </section>
+                    <p>Tu as déjà un compte? Connecte-toi!</p>
+                    <Link to="/">
+                      <button onClick={(event) => event.preventDefault}>
+                        Retourner à la page d'accueil
+                      </button>
+                    </Link>
+                  </section>
+                </form>
               </section>
+              {empty === true && (
+                <p className="red-signup">Veuillez compléter tous les champs</p>
+              )}
+              {/* -------OK----- */}
+              {errorPassword === true && (
+                <p className="red-signup">
+                  Votre mot de passe doit comporter au moins 8 caractères
+                </p>
+              )}
+              {/* -------OK----- */}
+              {errorserv === true && (
+                <p classeName="red-signup">
+                  Un problème est survenu. Veuillez réessayer ultérieurement.
+                </p>
+              )}
             </>
           ) : (
             <section className="created-signup">

@@ -4,6 +4,37 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
+const cookieFunc = async () => {
+  try {
+    const response = await axios.post(
+      "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+      user
+    );
+    console.log(response.data);
+    const token = response.data.token;
+    Cookies.set("token", token, { expires: 30 });
+    setCreated(true);
+    {
+      setLog(true);
+    }
+  } catch (error) {
+    setErrorserv(true);
+  }
+};
+
+const signupFunc = async () => {
+  setEmpty(false);
+  setErrorPassword(false);
+  setErrorserv(false);
+  if (!password || !mail || !username) {
+    setEmpty(true);
+  } else if (password.length < 8) {
+    setErrorPassword(true);
+  } else {
+    cookieFunc();
+  }
+};
+
 const Login = (log, setLog) => {
   const [empty, setEmpty] = useState(false);
   const [mail, setMail] = useState("");
@@ -13,33 +44,6 @@ const Login = (log, setLog) => {
   let response = {};
 
   const navigate = useNavigate();
-
-  const signupFunc = async () => {
-    setEmpty(false);
-    setErrorPassword(false);
-    setErrorserv(false);
-    if (!password || !mail || !username) {
-      setEmpty(true);
-    } else if (password.length < 8) {
-      setErrorPassword(true);
-    } else {
-      try {
-        const response = await axios.post(
-          "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-          user
-        );
-        console.log(response.data);
-        const token = response.data.token;
-        Cookies.set("token", token, { expires: 30 });
-        setCreated(true);
-        {
-          setLog(true);
-        }
-      } catch (error) {
-        setErrorserv(true);
-      }
-    }
-  };
 
   return (
     <>
@@ -91,7 +95,7 @@ const Login = (log, setLog) => {
               >
                 Se connecter
               </button>
-              {empty === true && <p>Veuillez compléter tous les champs</p>}{" "}
+              {empty === true && <p>Veuillez compléter tous les champs</p>}
               {/* -------OK----- */}
               {errorServLog === true && (
                 <p>

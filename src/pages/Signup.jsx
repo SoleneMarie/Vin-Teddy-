@@ -1,17 +1,25 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
-
-const Signup = ({ log, setLog }) => {
+import { useNavigate } from "react-router-dom";
+{
+  /*-----------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  ---------------------------------------mon component Signup -------------------------------------
+  ----------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------------------------------- */
+}
+const Signup = ({ tokenfunc }) => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [mail, setMail] = useState("");
   const [newsletter, setNewsletter] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [empty, setEmpty] = useState(false);
-  const [created, setCreated] = useState(false);
   const [errorserv, setErrorserv] = useState(false);
+  const [errorconflict, setErrorconflict] = useState(false);
+  const navigate = useNavigate();
+
   const user = {
     email: mail,
     username: username,
@@ -19,10 +27,27 @@ const Signup = ({ log, setLog }) => {
     newsletter: newsletter,
   };
 
+  {
+    /*-----------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  ---------------------------------------ma fonction pour signupFunc, -------------------------------------
+  ----------------------------------------se déclenche on submit-----------------------------------------
+  ------------------------------------------------------------------------------------------------------- */
+  }
+
   const signupFunc = async () => {
     setEmpty(false);
     setErrorPassword(false);
     setErrorserv(false);
+    setErrorconflict(false);
+    {
+      /*-----------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  -----------------------------Si tous les champs remplissent les condition, ------------------------------
+  ----------------------------------requête au back grâce à axios----------------------------------------
+  ------------------------------------------------------------------------------------------------------- */
+    }
+
     if (!password || !mail || !username) {
       setEmpty(true);
     } else if (password.length < 8) {
@@ -33,16 +58,20 @@ const Signup = ({ log, setLog }) => {
           "https://lereacteur-vinted-api.herokuapp.com/user/signup",
           user
         );
-
-        console.log(response.data);
-
         const token = response.data.token;
-        Cookies.set("token", token, { expires: 30 });
-        setCreated(true);
-
-        setLog(true);
+        tokenfunc(token);
+        navigate("/");
+        /*-----------------------------------------------------------------------------------------------------
+    -------------------------------------Je set le cookie----------------------------------------------------
+    ------------------------------------------------------------------------------------------------------- */
       } catch (error) {
-        setErrorserv(true);
+        if (error.message === "Request failed with status code 409") {
+          setErrorconflict(true);
+          console.log(error);
+        } else {
+          setErrorserv(true);
+          console.log(error);
+        }
       }
     }
   };
@@ -50,106 +79,114 @@ const Signup = ({ log, setLog }) => {
   {
     /* ------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
---------------------------------------------Formulaire----------------------------------------------
----------------------------------------et création de user---------------------------------------
+----------------------------------------      Le formulaire     -------------------------------------------
+------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------- */
   }
   return (
     <>
       <section className="wide-signup">
         <section className="widthlim-signup">
-          {errorserv === true || created === false ? (
-            <>
-              <div className="title-signup">
-                <h1>S'inscrire</h1>
-              </div>
-              <section className="form-signup">
-                <form
-                  onSubmit={(event) => {
-                    event.preventDefault();
-                    signupFunc();
-                  }}
-                >
-                  <section className="emptyfields-signup">
-                    <input
-                      type="text"
-                      id="username"
-                      name="username"
-                      placeholder="Nom d'utilisateur"
-                      onChange={(event) => {
-                        setUsername(event.target.value);
-                      }}
-                    />
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Email"
-                      onChange={(event) => {
-                        setMail(event.target.value);
-                      }}
-                    />
-                    <input
-                      type="password"
-                      id="password"
-                      name="password"
-                      placeholder="Mot de passe"
-                      onChange={(event) => {
-                        setPassword(event.target.value);
-                      }}
-                    />
-                  </section>
-                  <section className="newsletter-signup">
-                    <input
-                      type="checkbox"
-                      id="newsletter"
-                      name="newsletter"
-                      onClick={() => setNewsletter(true)}
-                    />
-                    <label>S'incrire à votre newsletter</label>
-                    <p>
-                      En m'inscrivant, je confirme avoir lu et accepté les
-                      Termes & Conditions et Politique de confidentialité de
-                      Vin'Teddy. Je confirme avoir au moins 18 ans.{" "}
-                    </p>
-                  </section>
+          {/*------------------------------------------------------------------------------------------------
+  --------------------------------------Si je catch une erreur, OU -------------------------------------
+  ----------------------------------------si mon compte n'est pas encore créé------------------------------
+  ------------------------------------------------------------------------------------------------------- */}
+          <>
+            <div className="title-signup">
+              <h1>S'inscrire</h1>
+            </div>
+            <section className="form-signup">
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  signupFunc(); /* on submit, j'appelle la fonction pour tenter de faire partir la requête */
+                }}
+              >
+                <section className="emptyfields-signup">
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Nom d'utilisateur"
+                    onChange={(event) => {
+                      setUsername(event.target.value);
+                    }}
+                  />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    onChange={(event) => {
+                      setMail(event.target.value);
+                    }}
+                  />
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Mot de passe"
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                    }}
+                  />
+                </section>
+                <section className="newsletter-signup">
+                  <input
+                    type="checkbox"
+                    id="newsletter"
+                    name="newsletter"
+                    onClick={() => {
+                      newsletter === false
+                        ? setNewsletter(true)
+                        : setNewsletter(false);
+                    }}
+                  />
+                  <label>S'incrire à votre newsletter</label>
+                  <p>
+                    En m'inscrivant, je confirme avoir lu et accepté les Termes
+                    & Conditions et Politique de confidentialité de Vin'Teddy.
+                    Je confirme avoir au moins 18 ans.{" "}
+                  </p>
+                </section>
 
-                  <section className="suscribe-signup">
-                    <button type="submit" onClick={signupFunc}>
-                      S'inscrire
-                    </button>
-                    <p>Tu as déjà un compte? Connecte-toi!</p>
-                    <Link to="/">
-                      <button>Retourner à la page d'accueil</button>
-                    </Link>
-                  </section>
-                </form>
-              </section>
-              {empty === true && (
-                <p className="red-signup">Veuillez compléter tous les champs</p>
-              )}
-              {/* -------OK----- */}
-              {errorPassword === true && (
-                <p className="red-signup">
-                  Votre mot de passe doit comporter au moins 8 caractères
-                </p>
-              )}
-              {/* -------OK----- */}
-              {errorserv === true && (
-                <p classeName="red-signup">
-                  Un problème est survenu. Veuillez réessayer ultérieurement.
-                </p>
-              )}
-            </>
-          ) : (
-            <section className="created-signup">
-              <p>Félicitations, votre compte a été créé!</p>
-
-              <Link to="/">
-                <button onClick>Retourner à la page d'accueil</button>
-              </Link>
+                <section className="suscribe-signup">
+                  <button>S'inscrire</button>
+                  <p>Tu as déjà un compte? Connecte-toi!</p>
+                  <Link to="/">
+                    <button>Retourner à la page d'accueil</button>
+                  </Link>
+                </section>
+              </form>
             </section>
-          )}
+            {/*-------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  --------------------------------------------Mes messages d'erreur---------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------------------------------- */}
+
+            {empty === true && (
+              <p className="red-signup">Veuillez compléter tous les champs</p>
+            )}
+            {/* -------OK----- */}
+            {errorPassword === true && (
+              <p className="red-signup">
+                Votre mot de passe doit comporter au moins 8 caractères
+              </p>
+            )}
+            {/* -------OK----- */}
+            {errorserv === true && (
+              <p className="red-signup">
+                Un problème est survenu. Veuillez réessayer ultérieurement.
+              </p>
+            )}
+            {errorconflict && (
+              <p className="red-signup">
+                Il semble que vous ayez déjà un compte : cliquez sur le bouton
+                "Se connecter".
+              </p>
+            )}
+          </>
         </section>
       </section>
     </>

@@ -1,57 +1,90 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const cookieFunc = async () => {
-  try {
-    const response = await axios.post(
-      "https://lereacteur-vinted-api.herokuapp.com/user/signup",
-      user
-    );
-    console.log(response.data);
-    const token = response.data.token;
-    Cookies.set("token", token, { expires: 30 });
-    setCreated(true);
-    {
-      setLog(true);
-    }
-  } catch (error) {
-    setErrorserv(true);
-  }
-};
+{
+  /*-----------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  --------------------------------------mon component pour login ----------------------------------------
+  -------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------------------------------- */
+}
 
-const signupFunc = async () => {
-  setEmpty(false);
-  setErrorPassword(false);
-  setErrorserv(false);
-  if (!password || !mail || !username) {
-    setEmpty(true);
-  } else if (password.length < 8) {
-    setErrorPassword(true);
-  } else {
-    cookieFunc();
-  }
-};
-
-const Login = (log, setLog) => {
-  const [empty, setEmpty] = useState(false);
+const Login = ({ tokenfunc }) => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorServLog, setErrorServLog] = useState("");
-  const data = { email: mail, password: password };
-  let response = {};
+  const [empty, setEmpty] = useState(false);
+  const [errorServLog, setErrorServLog] = useState(false);
+  const [errorMdp, setErrorMdp] = useState(false);
 
+  const data = { email: mail, password: password };
   const navigate = useNavigate();
+  {
+    /*-----------------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------------------
+  ---------------------------------------ma fonction pour login, -------------------------------------
+  ----------------------------------------se déclenche on submit-----------------------------------------
+  ------------------------------------------------------------------------------------------------------- */
+  }
+
+  const loginFunc = async () => {
+    setEmpty(false);
+    setErrorServLog(false);
+    setErrorMdp(false);
+    {
+      /*-----------------------------------------------------------------------------------------------------
+    ---------------------------------------Si mail ou password falsy,---------------------------------------
+    ---------------------------------------------state empty true-------------------------------------------
+    ------------------------------------------------------------------------------------------------------- */
+    }
+    if (!mail || !password) {
+      setEmpty(true);
+    } else {
+      /*-----------------------------------------------------------------------------------------------------
+      ------------------------------------Sinon, requête au back par Axios, ---------------------------------------
+      ----------------------------------------pour récupérer le token-----------------------------------------
+      ------------------------------------------------------------------------------------------------------- */
+      try {
+        const response = await axios.post(
+          " https://lereacteur-vinted-api.herokuapp.com/user/login",
+          data
+        );
+        /*-----------------------------------------------------------------------------------------------------
+    -------------------------------------Je set le cookie----------------------------------------------------
+    ------------------------------------------------------------------------------------------------------- */
+        tokenfunc(response.data.token);
+        navigate("/");
+        /*-----------------------------------------------------------------------------------------------------
+    -------------------------Si catch error, je set un message d'erreur ---------------------------------------
+    ------------------------------------------------------------------------------------------------------- */
+      } catch (error) {
+        if ((error.message = "Request failed with status code 401")) {
+          setErrorMdp(true);
+        } else {
+          setErrorServLog(true);
+        }
+        console.log(error.code);
+      }
+    }
+  };
 
   return (
     <>
+      {/*-----------------------------------------------------------------------------------------------------
+    --------------------------------------Mon formulaire de connexion--------------------------------------
+    ------------------------------------on submit : enclenche loginFunc------------------------------------
+    ------------------------------------------------------------------------------------------------------- */}
       <section className="wide-login">
         <section className="widthlim-login">
           <div className="title-login">Se connecter</div>
           <section className="form-login">
-            <form onSubmit={(event) => event.preventDefault()}>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                loginFunc();
+              }}
+            >
               <input
                 type="email"
                 id="email"
@@ -66,51 +99,35 @@ const Login = (log, setLog) => {
                 placeholder="Mot de passe"
                 onChange={(event) => setPassword(event.target.value)}
               />
-              <button
-                className="button-login"
-                type="submit"
-                onClick={async (event) => {
-                  event.preventDefault;
-                  setEmpty(false);
-                  setErrorServLog(false);
-                  {
-                    !mail || !password
-                      ? setEmpty(true)
-                      : (response = await axios.post(
-                          " https://lereacteur-vinted-api.herokuapp.com/user/login",
-                          data
-                        ));
-                    try {
-                      console.log(response.data);
-                      Cookies.set("token", response.data.token, {
-                        expires: 30,
-                      });
-                      setLog(true);
-                      navigate("/");
-                    } catch (error) {
-                      setErrorServLog(true);
-                    }
-                  }
-                }}
-              >
-                Se connecter
+              <button className="button-login">Se connecter</button>
+              <button className="ForgottenPassword">
+                Mot de passe oublié? Tant pis pour toi, t'avais qu'à le noter
               </button>
+            </form>
+            {/*-----------------------------------------------------------------------------------------------------------
+    --------------------------------------Lien vers la page signup, ------------------------------------------
+    ----------------------------------------si pas encore de compte------------------------------------------
+    ---------------------------------------------------------------------------------------------------------- */}
+            <Link to="/signup">
+              <p>Pas encore de compte? Inscris-toi!</p>
+            </Link>
+            <Link to="/">
+              <button>Retourner à la page d'accueil</button>
+            </Link>
+
+            {/*-----------------------------------------------------------------------------------------------------
+    ---------------------------------------------Mes messages d'erreur--------------------------------------------
+    -----------------------------------------------------------------------------------------------------------
+    ---------------------------------------------------------------------------------------------------------- */}
+            <section className="errorMessages">
               {empty === true && <p>Veuillez compléter tous les champs</p>}
-              {/* -------OK----- */}
               {errorServLog === true && (
                 <p>
                   Un problème est survenu. Veuillez réessayer ultérieurement.
                 </p>
               )}
-              <Link to="/signup">
-                <p>Pas encore de compte? Inscris-toi!</p>
-              </Link>
-              <Link to="/">
-                <button onClick={() => signupFunc()}>
-                  Retourner à la page d'accueil
-                </button>
-              </Link>
-            </form>
+              {errorMdp === true && <p>Email ou mot de passe incorrect</p>}
+            </section>
           </section>
         </section>
       </section>

@@ -4,10 +4,10 @@ import axios from "axios";
 
 const Offer = () => {
   const { id } = useParams();
-  console.log("mon id " + id);
 
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  let arrKeys = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,12 +15,14 @@ const Offer = () => {
         const response = await axios.get(
           "https://lereacteur-vinted-api.herokuapp.com/v2/offers/" + id
         );
+
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
         console.log(error.response.data);
       }
     };
+
     fetchData();
   }, []);
 
@@ -31,7 +33,6 @@ const Offer = () => {
     </p>
   ) : (
     <>
-      {console.log(data)}
       <main className="wide-offer">
         <section className="widthlim-offer">
           {/*--------------------------------------------------------------------------------
@@ -45,14 +46,97 @@ const Offer = () => {
           </section>
         </section>
 
+        {/*------------------MA METHODE .MAP ----------------------*/}
+
+        {data.product_details.map((item) => {
+          {
+            arrKeys.push(...Object.keys(item));
+          }
+          return;
+        })}
+
+        {/*------------------MA METHODE .MAP ----------------------*/}
+
+        {/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        --------------------------------------  .infos-offer : en abrégé   ---------------------------------
+      `------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
+        <section className="infos-offer">
+          <section className="summary">
+            {arrKeys.includes("MARQUE") && (
+              <div className="info">
+                <p>MARQUE</p>
+                <p>{data.product_details[arrKeys.indexOf("MARQUE")].MARQUE}</p>
+              </div>
+            )}
+
+            {arrKeys.includes("MARQUE") && (
+              <div className="info">
+                <p>TAILLE</p>
+                <p>{data.product_details[arrKeys.indexOf("TAILLE")].TAILLE}</p>
+              </div>
+            )}
+
+            {arrKeys.includes("ÉTAT") && (
+              <div className="info">
+                <p>ÉTAT</p>
+                <p>{data.product_details[arrKeys.indexOf("ÉTAT")].ÉTAT}</p>
+              </div>
+            )}
+
+            {arrKeys.includes("COULEUR") && (
+              <div className="info">
+                <p>COULEUR</p>
+                <p>
+                  {data.product_details[arrKeys.indexOf("COULEUR")].COULEUR}
+                </p>
+              </div>
+            )}
+
+            {arrKeys.includes("EMPLACEMENT") && (
+              <div className="info">
+                <p>EMPLACEMENT</p>
+                <p>
+                  {
+                    data.product_details[arrKeys.indexOf("EMPLACEMENT")]
+                      .EMPLACEMENT
+                  }
+                </p>
+              </div>
+            )}
+
+            {arrKeys.includes("MODES_DE_PAIEMENT") && (
+              <div className="info">
+                <p>MODES DE PAIEMENT</p>
+                <p>
+                  {
+                    data.product_details[arrKeys.indexOf("MODES_DE_PAIEMENT")]
+                      .MODES_DE_PAIEMENT
+                  }
+                </p>
+              </div>
+            )}
+          </section>
+        </section>
         {/*--------------------------------------------------------------------------------
         ----------------------------------------------------------------------------------
-        ---------------------section  .pic-offer  : affiche photo--------------------------
+        ----------------section  .infos-details  : affiche les infos qui vont avec--------------
         -----------------------------------------------------------------------------------
         --------------------------------------------------------------------------------- */}
-        <section className="infos-offer">
-          <section></section>
+
+        {console.log(data)}
+        <section className="offer-infos-details">
+          <p className="offer-description-title">{data.product_name}</p>
+          <p className="offer-description-summary">
+            {data.product_description}
+          </p>
         </section>
+        <div className="offer-seller">
+          {data.owner.account.avatar && (
+            <img src={data.owner.account.avatar.url} />
+          )}
+          <p>{data.owner.account.username}</p>
+        </div>
+        <button>Acheter</button>
       </main>
     </>
   );

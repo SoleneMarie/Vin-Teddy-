@@ -26,7 +26,7 @@ function App() {
   /*--------------Quand je clique dessus, elle supprime le cookie---------------- */
   const logoutfunc = () => {
     Cookies.remove("token");
-    setToken("null");
+    setToken(null);
   };
 
   return (
@@ -35,7 +35,13 @@ function App() {
         {token ? (
           <header className="connected">
             <p>Insérer header ici 🐣</p>
-            <button>Se déconnecter</button>
+            <button
+              onClick={() => {
+                logoutfunc();
+              }}
+            >
+              Se déconnecter
+            </button>
           </header>
         ) : (
           <header>

@@ -44,16 +44,18 @@ const Home = () => {
 --------------------------------------------------------------------------------------------------------- */}
         <section id="all-articles">
           {offers.map((item) => {
-            console.log(item._id);
             return (
               <>
                 <Link to={"/offer/" + item._id} key={item._id}>
                   <section className="one-article">
                     <div className="user">
-                      <img
-                        src={item.owner.account.avatar.url}
-                        alt="avatar de l'utilisateur"
-                      />
+                      {item.owner.account.avatar && (
+                        <img
+                          src={item.owner.account.avatar.url}
+                          alt="avatar de l'utilisateur"
+                        />
+                      )}
+
                       <p>{item.owner.account.username}</p>
                     </div>
                     <div className="main-pic">

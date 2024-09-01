@@ -27,7 +27,7 @@ const Offer = () => {
   }, []);
 
   return isLoading ? (
-    <p>
+    <p className="loading">
       🐣En cours de chargement. Je vois que la patience n'est toujours pas ton
       point fort!🐣
     </p>
@@ -44,99 +44,120 @@ const Offer = () => {
           <section className="pic-offer">
             <img src={data.product_image.url} alt={data.product_name} />
           </section>
-        </section>
 
-        {/*------------------MA METHODE .MAP ----------------------*/}
+          <section className="description">
+            <section className="firsthalf">
+              {/*------------------MA METHODE .MAP ----------------------*/}
 
-        {data.product_details.map((item) => {
-          {
-            arrKeys.push(...Object.keys(item));
-          }
-          return;
-        })}
+              {data.product_details.map((item) => {
+                {
+                  arrKeys.push(...Object.keys(item));
+                }
+                return;
+              })}
 
-        {/*------------------MA METHODE .MAP ----------------------*/}
+              {/*------------------MA METHODE .MAP ----------------------*/}
 
-        {/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+              {/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         --------------------------------------  .infos-offer : en abrégé   ---------------------------------
       `------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */}
-        <section className="infos-offer">
-          <section className="summary">
-            {arrKeys.includes("MARQUE") && (
-              <div className="info">
-                <p>MARQUE</p>
-                <p>{data.product_details[arrKeys.indexOf("MARQUE")].MARQUE}</p>
-              </div>
-            )}
-
-            {arrKeys.includes("MARQUE") && (
-              <div className="info">
-                <p>TAILLE</p>
-                <p>{data.product_details[arrKeys.indexOf("TAILLE")].TAILLE}</p>
-              </div>
-            )}
-
-            {arrKeys.includes("ÉTAT") && (
-              <div className="info">
-                <p>ÉTAT</p>
-                <p>{data.product_details[arrKeys.indexOf("ÉTAT")].ÉTAT}</p>
-              </div>
-            )}
-
-            {arrKeys.includes("COULEUR") && (
-              <div className="info">
-                <p>COULEUR</p>
-                <p>
-                  {data.product_details[arrKeys.indexOf("COULEUR")].COULEUR}
+              <section className="infos-offer">
+                <p className="price">
+                  {Number(data.product_price).toFixed(2)} €
                 </p>
-              </div>
-            )}
+                <section className="summary">
+                  {arrKeys.includes("MARQUE") && (
+                    <div className="info">
+                      <p>MARQUE</p>
+                      <p>
+                        {data.product_details[arrKeys.indexOf("MARQUE")].MARQUE}
+                      </p>
+                    </div>
+                  )}
 
-            {arrKeys.includes("EMPLACEMENT") && (
-              <div className="info">
-                <p>EMPLACEMENT</p>
-                <p>
-                  {
-                    data.product_details[arrKeys.indexOf("EMPLACEMENT")]
-                      .EMPLACEMENT
-                  }
-                </p>
-              </div>
-            )}
+                  {arrKeys.includes("TAILLE") && (
+                    <div className="info">
+                      <p>TAILLE</p>
+                      <p>
+                        {data.product_details[arrKeys.indexOf("TAILLE")].TAILLE}
+                      </p>
+                    </div>
+                  )}
 
-            {arrKeys.includes("MODES_DE_PAIEMENT") && (
-              <div className="info">
-                <p>MODES DE PAIEMENT</p>
-                <p>
-                  {
-                    data.product_details[arrKeys.indexOf("MODES_DE_PAIEMENT")]
-                      .MODES_DE_PAIEMENT
-                  }
-                </p>
-              </div>
-            )}
-          </section>
-        </section>
-        {/*--------------------------------------------------------------------------------
+                  {arrKeys.includes("ÉTAT") && (
+                    <div className="info">
+                      <p>ÉTAT</p>
+                      <p>
+                        {data.product_details[arrKeys.indexOf("ÉTAT")].ÉTAT}
+                      </p>
+                    </div>
+                  )}
+
+                  {arrKeys.includes("COULEUR") && (
+                    <div className="info">
+                      <p>COULEUR</p>
+                      <p>
+                        {
+                          data.product_details[arrKeys.indexOf("COULEUR")]
+                            .COULEUR
+                        }
+                      </p>
+                    </div>
+                  )}
+
+                  {arrKeys.includes("EMPLACEMENT") && (
+                    <div className="info">
+                      <p>EMPLACEMENT</p>
+                      <p>
+                        {
+                          data.product_details[arrKeys.indexOf("EMPLACEMENT")]
+                            .EMPLACEMENT
+                        }
+                      </p>
+                    </div>
+                  )}
+
+                  {arrKeys.includes("MODES_DE_PAIEMENT") && (
+                    <div className="info">
+                      <p>MODES DE PAIEMENT</p>
+                      <p>
+                        {
+                          data.product_details[
+                            arrKeys.indexOf("MODES_DE_PAIEMENT")
+                          ].MODES_DE_PAIEMENT
+                        }
+                      </p>
+                    </div>
+                  )}
+                </section>
+              </section>
+              <section className="border"></section>
+
+              {/*--------------------------------------------------------------------------------
         ----------------------------------------------------------------------------------
         ----------------section  .infos-details  : affiche les infos qui vont avec--------------
         -----------------------------------------------------------------------------------
         --------------------------------------------------------------------------------- */}
 
-        {console.log(data)}
-        <section className="offer-infos-details">
-          <p className="offer-description-title">{data.product_name}</p>
-          <p className="offer-description-summary">
-            {data.product_description}
-          </p>
+              {console.log(data)}
+              <section className="offer-infos-details">
+                <h2 className="offer-description-title">{data.product_name}</h2>
+                <p className="offer-description-summary">
+                  {data.product_description}
+                </p>
+              </section>
+              <div className="offer-seller">
+                {data.owner.account.avatar && (
+                  <img src={data.owner.account.avatar.url} />
+                )}
+                <p>{data.owner.account.username}</p>
+              </div>
+            </section>
+            <section className="secondhalf">
+              <button>Acheter</button>
+            </section>
+          </section>
         </section>
-        <div className="offer-seller">
-          {data.owner.account.avatar && (
-            <img src={data.owner.account.avatar.url} />
-          )}
-          <p>{data.owner.account.username}</p>
-        </div>
-        <button>Acheter</button>
       </main>
     </>
   );

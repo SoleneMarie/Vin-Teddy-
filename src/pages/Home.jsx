@@ -22,7 +22,7 @@ const Home = () => {
   }, []);
   const offers = data.offers;
   return isLoading ? (
-    <p>
+    <p className="login">
       🐣En cours de chargement. Je vois que la patience n'est pas ton point
       fort, prends sur toi.🐣
     </p>
@@ -46,7 +46,11 @@ const Home = () => {
           {offers.map((item) => {
             return (
               <>
-                <Link to={"/offer/" + item._id} key={item._id}>
+                <Link
+                  to={"/offer/" + item._id}
+                  key={item._id}
+                  style={{ textDecoration: "none", color: "#999" }}
+                >
                   <section className="one-article">
                     <div className="user">
                       {item.owner.account.avatar && (
@@ -62,11 +66,13 @@ const Home = () => {
                       <img src={item.product_image.url} />
                     </div>
                     <div className="details">
-                      <span>{item.product_price} €</span>
+                      <p style={{ color: "black" }}>
+                        {Number(item.product_price).toFixed(2)} €
+                      </p>
                       {item.product_details[1].TAILLE && (
-                        <span>{item.product_details[1].TAILLE}</span>
+                        <p>{item.product_details[1].TAILLE}</p>
                       )}
-                      <span>{item.product_details[0].MARQUE}</span>
+                      <p>{item.product_details[0].MARQUE}</p>
                     </div>
                   </section>
                 </Link>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Home from "./pages/Home";
 import Offer from "./pages/Offer";
 import Login from "./pages/Login";
@@ -7,9 +7,12 @@ import Cookies from "js-cookie";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Link } from "react-router-dom";
+import Logo from "./pictures/vinted9809.jpg";
+import { HiMagnifyingGlass } from "react-icons/hi2";
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null);
+  const [search, setSearch] = useState("");
 
   /*--------------------------ma fonction pour voir s'il y a un 🍪--------------------------- */
   /*--Je lui donne en argument le state de token: soit rien, soit cookie enregistré sous ce nom-- */
@@ -34,23 +37,83 @@ function App() {
       <Router>
         {token ? (
           <header className="connected">
-            <p>Insérer header ici 🐣</p>
-            <button
-              onClick={() => {
-                logoutfunc();
-              }}
-            >
-              Se déconnecter
-            </button>
+            <section id="headersec">
+              <Link to="/">
+                <button id="mainlogo">
+                  <img src={Logo} />
+                </button>
+              </Link>
+              <section id="header-search">
+                <form>
+                  <input
+                    type="text"
+                    placeholder={"🔍   Recherche des articles"}
+                    id="search"
+                    name="search"
+                    onChange={(event) => {
+                      setSearch(event.target.value);
+                    }}
+                  />
+                </form>
+              </section>
+              <section id="disconnect-sec">
+                <button
+                  id="deconnect"
+                  style={{ backgroundColor: "white" }}
+                  onClick={() => {
+                    logoutfunc();
+                  }}
+                >
+                  Se déconnecter
+                </button>
+                <div id="sell">
+                  <button>Vends tes articles</button>
+                </div>
+              </section>
+            </section>
           </header>
         ) : (
           <header>
-            <Link to="/signup">
-              <button> S'inscrire</button>
-            </Link>
-            <Link to="/login">
-              <button>Se connecter</button>
-            </Link>
+            <section id="headersec">
+              <Link to="/">
+                <button id="mainlogo">
+                  <img src={Logo} />
+                </button>
+              </Link>
+              <section id="header-search">
+                <form>
+                  <input
+                    type="text"
+                    placeholder={"Recherche des articles"}
+                    id="search"
+                    name="search"
+                    onChange={(event) => {
+                      setSearch(event.target.value);
+                    }}
+                  />
+                </form>
+                <div className="absolute">
+                  <HiMagnifyingGlass />
+                </div>
+              </section>
+              <section id="buttons">
+                <div id="sign">
+                  <Link to="/signup">
+                    <button style={{ backgroundColor: "white" }}>
+                      S'inscrire
+                    </button>
+                  </Link>
+                  <Link to="/login">
+                    <button style={{ backgroundColor: "white" }}>
+                      Se connecter
+                    </button>
+                  </Link>
+                </div>
+                <div id="sell">
+                  <button>Vends tes articles</button>
+                </div>
+              </section>
+            </section>
           </header>
         )}
 

@@ -38,7 +38,9 @@ const Login = ({ tokenfunc }) => {
     ---------------------------------------------state empty true-------------------------------------------
     ------------------------------------------------------------------------------------------------------- */
     }
+    console.log(!mail, !password);
     if (!mail || !password) {
+      console.log(empty);
       setEmpty(true);
     } else {
       /*-----------------------------------------------------------------------------------------------------
@@ -77,56 +79,65 @@ const Login = ({ tokenfunc }) => {
     ------------------------------------------------------------------------------------------------------- */}
       <section className="wide-login">
         <section className="widthlim-login">
-          <div className="title-login">Se connecter</div>
           <section className="form-login">
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                loginFunc();
-              }}
-            >
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Adresse email"
-                onChange={(event) => setMail(event.target.value)}
-              />
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Mot de passe"
-                onChange={(event) => setPassword(event.target.value)}
-              />
-              <button className="button-login">Se connecter</button>
-              <button className="ForgottenPassword">
-                Mot de passe oublié? Tant pis pour toi, t'avais qu'à le noter
-              </button>
-            </form>
-            {/*-----------------------------------------------------------------------------------------------------------
+            <h3 className="title-signup">Se connecter</h3>
+            <section className="emptyfields-signup">
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  loginFunc();
+                }}
+              >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Adresse email"
+                  onChange={(event) => setMail(event.target.value)}
+                />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Mot de passe"
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+
+                <section className="suscribe-signup">
+                  <p id="ForgottenPassword">
+                    Mot de passe oublié? Eh bien il fallait le noter.
+                  </p>
+                  <button className="button-login">Se connecter</button>
+                  {/*-----------------------------------------------------------------------------------------------------------
     --------------------------------------Lien vers la page signup, ------------------------------------------
     ----------------------------------------si pas encore de compte------------------------------------------
     ---------------------------------------------------------------------------------------------------------- */}
-            <Link to="/signup">
-              <p>Pas encore de compte? Inscris-toi!</p>
-            </Link>
-            <Link to="/">
-              <button>Retourner à la page d'accueil</button>
-            </Link>
-
-            {/*-----------------------------------------------------------------------------------------------------
+                  <Link to="/signup">
+                    <p id="pasdecompte">Pas encore de compte? Inscris-toi!</p>
+                  </Link>{" "}
+                  <Link to="/">
+                    <button>Retourner à la page d'accueil</button>
+                  </Link>
+                  {/*-----------------------------------------------------------------------------------------------------
     ---------------------------------------------Mes messages d'erreur--------------------------------------------
     -----------------------------------------------------------------------------------------------------------
     ---------------------------------------------------------------------------------------------------------- */}
-            <section className="errorMessages">
-              {empty === true && <p>Veuillez compléter tous les champs</p>}
-              {errorServLog === true && (
-                <p>
-                  Un problème est survenu. Veuillez réessayer ultérieurement.
-                </p>
-              )}
-              {errorMdp === true && <p>Email ou mot de passe incorrect</p>}
+                  <section className="errorMessages">
+                    {empty === true && (
+                      <p>Veuillez compléter tous les champs</p>
+                    )}
+                    {errorServLog === true && (
+                      <p>
+                        Un problème est survenu. Veuillez réessayer
+                        ultérieurement.
+                      </p>
+                    )}
+                    {errorMdp === true && (
+                      <p>Email ou mot de passe incorrect</p>
+                    )}
+                  </section>
+                </section>
+              </form>
             </section>
           </section>
         </section>

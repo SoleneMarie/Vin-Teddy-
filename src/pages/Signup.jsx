@@ -93,7 +93,7 @@ const Signup = ({ tokenfunc }) => {
   ------------------------------------------------------------------------------------------------------- */}
           <>
             <div className="title-signup">
-              <h1>S'inscrire</h1>
+              <h3>S'inscrire</h3>
             </div>
             <section className="form-signup">
               <form
@@ -132,17 +132,19 @@ const Signup = ({ tokenfunc }) => {
                   />
                 </section>
                 <section className="newsletter-signup">
-                  <input
-                    type="checkbox"
-                    id="newsletter"
-                    name="newsletter"
-                    onClick={() => {
-                      newsletter === false
-                        ? setNewsletter(true)
-                        : setNewsletter(false);
-                    }}
-                  />
-                  <label>S'incrire à votre newsletter</label>
+                  <div className="input">
+                    <input
+                      type="checkbox"
+                      id="newsletter"
+                      name="newsletter"
+                      onClick={() => {
+                        newsletter === false
+                          ? setNewsletter(true)
+                          : setNewsletter(false);
+                      }}
+                    />
+                    <p>S'incrire à votre newsletter</p>
+                  </div>
                   <p>
                     En m'inscrivant, je confirme avoir lu et accepté les Termes
                     & Conditions et Politique de confidentialité de Vin'Teddy.
@@ -157,35 +159,38 @@ const Signup = ({ tokenfunc }) => {
                     <button>Retourner à la page d'accueil</button>
                   </Link>
                 </section>
-              </form>
-            </section>
-            {/*-------------------------------------------------------------------------------------------
+
+                {/*-------------------------------------------------------------------------------------------
   --------------------------------------------------------------------------------------------------------
   --------------------------------------------Mes messages d'erreur---------------------------------------
   --------------------------------------------------------------------------------------------------------
   ------------------------------------------------------------------------------------------------------- */}
 
-            {empty === true && (
-              <p className="red-signup">Veuillez compléter tous les champs</p>
-            )}
-            {/* -------OK----- */}
-            {errorPassword === true && (
-              <p className="red-signup">
-                Votre mot de passe doit comporter au moins 8 caractères
-              </p>
-            )}
-            {/* -------OK----- */}
-            {errorserv === true && (
-              <p className="red-signup">
-                Un problème est survenu. Veuillez réessayer ultérieurement.
-              </p>
-            )}
-            {errorconflict && (
-              <p className="red-signup">
-                Il semble que vous ayez déjà un compte : cliquez sur le bouton
-                "Se connecter".
-              </p>
-            )}
+                {empty === true && (
+                  <p className="red-signup">
+                    Veuillez compléter tous les champs
+                  </p>
+                )}
+                {/* -------OK----- */}
+                {errorPassword === true && (
+                  <p className="red-signup">
+                    Votre mot de passe doit comporter au moins 8 caractères
+                  </p>
+                )}
+                {/* -------OK----- */}
+                {errorserv === true && (
+                  <p className="red-signup">
+                    Un problème est survenu. Veuillez réessayer ultérieurement.
+                  </p>
+                )}
+                {errorconflict && (
+                  <p className="red-signup">
+                    Il semble que vous ayez déjà un compte : cliquez sur le
+                    bouton "Se connecter".
+                  </p>
+                )}
+              </form>
+            </section>
           </>
         </section>
       </section>

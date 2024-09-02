@@ -139,11 +139,15 @@ h1 {
   font-size: 12px;
 }
 
+#titleblock button:hover {
+  cursor: pointer;
+}
+
 #deconnect {
   width: 115px;
   height: 30px;
-  border: 1px solid #2cb1ba;
-  color: #2cb1ba;
+  border: none;
+  color: white;
   border-radius: 5px;
   font-size: 12px;
 }
@@ -588,4 +592,19 @@ textarea::placeholder {
   border: none;
   border-radius: 5px;
   font-size: 16px;
+}
+
+.not-id {
+  padding: 40px;
+  text-align: center;
+  margin: 0 auto;
+  color: #bb3d4c;
+}
+
+.not-id span {
+  font-weight: bold;
+}
+
+.not-id span:hover {
+  cursor: pointer;
 }

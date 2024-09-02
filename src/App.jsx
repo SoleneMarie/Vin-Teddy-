@@ -13,6 +13,7 @@ import Header from "./components/Header";
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null);
+  const [search, setSearch] = useState("");
 
   /*--------------------------ma fonction pour voir s'il y a un 🍪--------------------------- */
   /*--Je lui donne en argument le state de token: soit rien, soit cookie enregistré sous ce nom-- */
@@ -35,9 +36,17 @@ function App() {
   return (
     <>
       <Router>
-        <Header token={token} setToken={setToken} logoutfunc={logoutfunc} />
+        <Header
+          token={token}
+          setToken={setToken}
+          logoutfunc={logoutfunc}
+          setSearch={setSearch}
+        />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={<Home search={search} setSearch={setSearch} />}
+          />
           <Route path="/offer/:id" element={<Offer />} />
           <Route path="/signup" element={<Signup tokenfunc={tokenfunc} />} />
           <Route path="/login" element={<Login tokenfunc={tokenfunc} />} />

@@ -2,15 +2,16 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const Home = () => {
+const Home = ({ search, setSearch }) => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  console.log(search);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://lereacteur-vinted-api.herokuapp.com/v2/offers"
+          `https://lereacteur-vinted-api.herokuapp.com/v2/offers?title=${search}`
         );
         setData(response.data);
         setIsLoading(false);
@@ -19,7 +20,7 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [search]);
   const offers = data.offers;
   return isLoading ? (
     <p className="login">
@@ -33,7 +34,10 @@ const Home = () => {
           <section className="widthLim">
             <section id="titleblock">
               <h1>Prêts à faire du tri dans vos placards?</h1>
-              <button>Commencer à vendre</button>
+
+              <Link to={"/publish"}>
+                <button>Commencer à vendre</button>
+              </Link>
             </section>
           </section>
         </section>

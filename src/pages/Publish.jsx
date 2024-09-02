@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Publish = ({ token }) => {
   const [pic, setPic] = useState(null);
@@ -207,9 +208,18 @@ const Publish = ({ token }) => {
       </section>
     </main>
   ) : (
-    <p>
-      Vous n'êtes pas identifié. Cliquez <span>ici</span> pour vous identifier
-    </p>
+    <div className="not-id">
+      <p>
+        Vous n'êtes pas identifié. Cliquez{" "}
+        <Link
+          to={"../login"}
+          style={{ color: "#bb3d4c", textDecoration: "none" }}
+        >
+          <span>ici</span>
+        </Link>{" "}
+        pour vous identifier
+      </p>
+    </div>
   );
 };
 export default Publish;

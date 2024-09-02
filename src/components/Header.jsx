@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import Logo from "../pictures/vinted9809.jpg";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
-const Header = ({ token, setToken, logoutfunc }) => {
-  const [search, setSearch] = useState("");
+const Header = ({ token, setToken, logoutfunc, setSearch }) => {
   const navigate = useNavigate();
 
   return (
@@ -22,7 +21,7 @@ const Header = ({ token, setToken, logoutfunc }) => {
               <form>
                 <input
                   type="text"
-                  placeholder={"🔍   Recherche des articles"}
+                  placeholder={"Recherche des articles"}
                   id="search"
                   name="search"
                   onChange={(event) => {
@@ -30,11 +29,14 @@ const Header = ({ token, setToken, logoutfunc }) => {
                   }}
                 />
               </form>
+              <div className="absolute">
+                <HiMagnifyingGlass />
+              </div>
             </section>
             <section id="disconnect-sec">
               <button
                 id="deconnect"
-                style={{ backgroundColor: "white" }}
+                style={{ backgroundColor: "#C2175B" }}
                 onClick={() => {
                   logoutfunc();
                 }}

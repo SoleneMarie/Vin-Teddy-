@@ -6,7 +6,7 @@ import axios from "axios";
 export default function CheckoutForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const stripe = useStripe();
   const elements = useElements();
@@ -19,7 +19,8 @@ export default function CheckoutForm() {
   ) : (
     <form>
       <PaymentElement />
-      <button>Payer</button>
+      <button disabled={!stripe || !elements || loading}>Payer</button>{" "}
+      {errorMessage && <p>{errorMessage}</p>}
     </form>
   );
 }

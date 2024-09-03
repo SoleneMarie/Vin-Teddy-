@@ -13,7 +13,7 @@ const Payment = ({ priceTopay, offerID }) => {
   const ID = offerID;
   const options = {
     mode: "payment",
-    amount: price,
+    amount: Number((price * 100).toFixed(0)),
     currency: "eur",
   };
 

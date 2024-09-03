@@ -56,7 +56,6 @@ function App() {
               <Offer setOfferID={setOfferID} setPriceTopay={setPriceTopay} />
             }
           />
-
           <Route path="/signup" element={<Signup tokenfunc={tokenfunc} />} />
           <Route path="/login" element={<Login tokenfunc={tokenfunc} />} />
           <Route path="/publish" element={<Publish token={token} />} />

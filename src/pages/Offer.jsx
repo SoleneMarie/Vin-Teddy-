@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Offer = () => {
   const { id } = useParams();
@@ -154,7 +155,9 @@ const Offer = () => {
               </div>
             </section>
             <section className="secondhalf">
-              <button>Acheter</button>
+              <Link to="/payment">
+                <button>Acheter</button>
+              </Link>
             </section>
           </section>
         </section>

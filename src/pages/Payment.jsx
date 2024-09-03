@@ -15,6 +15,7 @@ const Payment = ({ priceTopay, offerID, title }) => {
     mode: "payment",
     amount: Number((price * 100).toFixed(0)),
     currency: "eur",
+    description: ID,
   };
 
   return (

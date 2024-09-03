@@ -52,7 +52,8 @@ export default function CheckoutForm({ title, priceTopay, ID }) {
     setLoading(false);
   };
 
-  /*---------- ma fonction pour trouver l'offre et la modifier )------------ */
+  /*---------- ma fonction pour trouver l'offre et la modifier , ne peut pas----------
+  ------------------------ fonctionner avec le back actuel ------------------------ */
 
   useEffect(() => {
     const findOfferFunc = async () => {
@@ -73,19 +74,58 @@ export default function CheckoutForm({ title, priceTopay, ID }) {
     findOfferFunc();
   }, [success]);
 
+  /*-----------------------------------------------------------------------------
+  ---------------------------------------------------------------------------- */
+
   return success ? (
-    <p>
-      Merci pour votre achat! Cliquez{" "}
-      <Link to="/">
-        <span>ici</span>{" "}
-      </Link>
-      pour revenir à la boutique.
-    </p>
+    <main className="main-payment">
+      <section className="width-lim-payment">
+        <p>
+          Merci pour votre achat! Cliquez{" "}
+          <Link to="/">
+            <span>ici</span>{" "}
+          </Link>
+          pour revenir à la boutique.
+        </p>
+      </section>
+    </main>
   ) : (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      <button disabled={!stripe || !elements || loading}>Payer</button>{" "}
-      {errorMessage && <p>{errorMessage}</p>}
-    </form>
+    <main className="main-payment">
+      <section className="width-lim-payment">
+        <p id="grey-p">Résumé de la commande</p>
+        <section id="sumup-pay">
+          {" "}
+          <div className="one-line-payment">
+            <p>Commande</p>
+            <p>{priceTopay.toFixed(2)} €</p>
+          </div>
+          <div className="one-line-payment">
+            <p>Frais de protection acheteur</p>
+            <p>{(1.2).toFixed(2)} €</p>
+          </div>
+          <div className="one-line-payment">
+            <p>Frais de livraison</p>
+            <p>{(2.4).toFixed(2)} €</p>
+          </div>
+        </section>
+        <div className="total-payment">
+          <p>Total</p>
+          <p>{(priceTopay + 2.4).toFixed(2)} €</p>
+        </div>
+        <p id="last-step">
+          Il ne vous reste plus qu'un étape pour vous offrir{" "}
+          <span className="bold-payment">{title}</span>. Vous allez payer{" "}
+          <span className="bold-payment">
+            {(priceTopay + 2.4).toFixed(2)} €
+          </span>{" "}
+          (frais de protection et frais de port inclus).
+        </p>
+        <form className="payment-form" onSubmit={handleSubmit}>
+          <PaymentElement />
+          <button disabled={!stripe || !elements || loading}>Pay</button>{" "}
+          {errorMessage && <p>{errorMessage}</p>}
+        </form>
+      </section>
+    </main>
   );
 }

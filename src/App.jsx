@@ -10,10 +10,13 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Publish from "./pages/Publish";
 import Header from "./components/Header";
+import Payment from "./pages/Payment";
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null);
   const [search, setSearch] = useState("");
+  const [priceTopay, setPriceTopay] = useState(0);
+  const [offerID, setOfferID] = useState("");
 
   /*--------------------------ma fonction pour voir s'il y a un 🍪--------------------------- */
   /*--Je lui donne en argument le state de token: soit rien, soit cookie enregistré sous ce nom-- */
@@ -47,10 +50,20 @@ function App() {
             path="/"
             element={<Home search={search} setSearch={setSearch} />}
           />
-          <Route path="/offer/:id" element={<Offer />} />
+          <Route
+            path="/offer/:id"
+            element={
+              <Offer setOfferID={setOfferID} setPriceTopay={setPriceTopay} />
+            }
+          />
+          {console.log("prix page app" + priceTopay)}
           <Route path="/signup" element={<Signup tokenfunc={tokenfunc} />} />
           <Route path="/login" element={<Login tokenfunc={tokenfunc} />} />
           <Route path="/publish" element={<Publish token={token} />} />
+          <Route
+            path="/payment"
+            element={<Payment priceTopay={priceTopay} offerID={offerID} />}
+          />
         </Routes>
       </Router>
     </>

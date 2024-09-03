@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const Offer = () => {
+const Offer = ({ setOfferID, setPriceTopay }) => {
   const { id } = useParams();
 
   const [data, setData] = useState({});
@@ -20,12 +20,14 @@ const Offer = () => {
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error.response);
       }
     };
-
     fetchData();
   }, []);
+
+  setOfferID(id);
+  setPriceTopay(data.product_price);
 
   return isLoading ? (
     <p className="loading">

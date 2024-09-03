@@ -21,7 +21,9 @@ const Home = ({ search, setSearch }) => {
     };
     fetchData();
   }, [search]);
+
   const offers = data.offers;
+
   return isLoading ? (
     <p className="login">
       🐣En cours de chargement. Je vois que la patience n'est pas ton point
